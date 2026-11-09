@@ -11,48 +11,98 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Subtle Scanning Hacker Grid Background Effect */
+        .hacker-bg {
+            background-image: 
+                linear-gradient(to right, rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+            position: relative;
+        }
+        .hacker-bg::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        /* Smooth entrance animation for sections */
+        .reveal {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans transition-colors duration-300 selection:bg-cyan-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans transition-colors duration-300 selection:bg-cyan-500 selection:text-white hacker-bg overflow-x-hidden">
 
     <!-- Header / Navbar -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="#" class="text-xl font-bold tracking-tight text-cyan-600 dark:text-cyan-400">Rodolfo Apo Jr<span class="text-slate-800 dark:text-slate-100">.dev</span></a>
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+            <a href="#" class="text-lg font-bold tracking-tight text-cyan-600 dark:text-cyan-400">Rodolfo Apo Jr<span class="text-slate-800 dark:text-slate-100">.dev</span></a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 dark:text-slate-300">
                 <a href="#about" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">About</a>
                 <a href="#experience" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Experience</a>
                 <a href="#projects" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Projects</a>
                 <a href="#skills" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Skills</a>
             </nav>
-            <div class="flex items-center space-x-4">
+
+            <div class="flex items-center space-x-3">
                 <!-- Theme Toggle Button -->
-                <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors" title="Toggle dark mode">
-                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                <button id="theme-toggle" class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors" title="Toggle dark mode">
+                    <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
                 </button>
-                <a href="#contact" class="px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-cyan-600 text-white dark:bg-cyan-500 dark:text-slate-950 rounded-md hover:bg-cyan-500 dark:hover:bg-cyan-400 transition-colors">Get in Touch</a>
+                <a href="#contact" class="hidden sm:inline-block px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-600 text-white dark:bg-cyan-500 dark:text-slate-950 rounded-md hover:bg-cyan-500 dark:hover:bg-cyan-400 transition-colors">Get in Touch</a>
+                
+                <!-- Mobile Menu Button -->
+                <button id="menu-btn" class="md:hidden p-1.5 text-slate-600 dark:text-slate-300 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-3 space-y-2">
+            <a href="#about" class="block text-sm text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 font-medium">About</a>
+            <a href="#experience" class="block text-sm text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 font-medium">Experience</a>
+            <a href="#projects" class="block text-sm text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 font-medium">Projects</a>
+            <a href="#skills" class="block text-sm text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 font-medium">Skills</a>
+            <a href="#contact" class="block text-center w-full mt-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-600 text-white dark:bg-cyan-500 dark:text-slate-950 rounded-md">Get in Touch</a>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 md:pt-44 md:pb-32 px-6 border-b border-slate-200 dark:border-slate-900 bg-gradient-to-b from-slate-100/50 to-slate-50 dark:from-slate-900/50 dark:to-slate-950 transition-colors duration-300">
-        <div class="max-w-6xl mx-auto">
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-xs font-medium mb-6">
-                <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+    <section class="pt-28 pb-12 md:pt-36 md:pb-20 px-6 border-b border-slate-200/60 dark:border-slate-900 bg-gradient-to-b from-slate-100/40 to-slate-50 dark:from-slate-900/40 dark:to-slate-950 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto reveal">
+            <div class="inline-flex items-center space-x-2 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-xs font-medium mb-4">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span>
                 <span>IT Professional & Mobile Developer</span>
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-3xl leading-tight">
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-3xl leading-tight">
                 Building mobile tools, automation, and enterprise systems.
             </h1>
-            <p class="mt-6 text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+            <p class="mt-4 text-base text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
                 Senior Software Technical Analyst at Manulife and Lead Developer & Architect of <strong class="text-slate-900 dark:text-slate-200">Xway PH</strong>. Over 15 years of experience in enterprise support, process automation, and software engineering.
             </p>
-            <div class="mt-8 flex flex-wrap gap-4">
-                <a href="#projects" class="px-6 py-3 bg-cyan-600 text-white dark:bg-cyan-500 dark:text-slate-950 font-semibold rounded-lg hover:bg-cyan-500 dark:hover:bg-cyan-400 transition-colors flex items-center space-x-2">
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a href="#projects" class="px-5 py-2.5 bg-cyan-600 text-white dark:bg-cyan-500 dark:text-slate-950 text-sm font-semibold rounded-lg hover:bg-cyan-500 dark:hover:bg-cyan-400 transition-all hover:scale-105 shadow-sm flex items-center space-x-2">
                     <span>Explore Xway PH</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
-                <a href="#contact" class="px-6 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <a href="#contact" class="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all hover:scale-105">
                     Get in Touch
                 </a>
             </div>
@@ -60,63 +110,63 @@
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-20 px-6 max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+    <section id="about" class="py-12 px-6 max-w-6xl mx-auto reveal">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             <div class="md:col-span-2">
-                <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Background</h2>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-3">Background</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-3">
                     IT professional with over 15 years of hands-on experience spanning Accenture, IBM, and Manulife. Certified ITIL V4 professional focused on global support operations, workflow automation, and application system reliability.
                 </p>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                     Outside of enterprise work, I design and build independent software projects like <strong class="text-cyan-600 dark:text-cyan-400">Xway PH</strong>, managing its architecture, mobile engineering, and deployment pipelines.
                 </p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl transition-colors duration-300">
-                <h3 class="text-sm font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-4">Core Focus</h3>
-                <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                    <li class="flex items-center space-x-3"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Enterprise Application Support</span></li>
-                    <li class="flex items-center space-x-3"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Xway PH Architecture & Development</span></li>
-                    <li class="flex items-center space-x-3"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Process Automation & Workflows</span></li>
-                    <li class="flex items-center space-x-3"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Native Android Development</span></li>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm dark:shadow-md transition-all duration-300 hover:border-cyan-500/50">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-3">Core Focus</h3>
+                <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                    <li class="flex items-center space-x-2.5"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Enterprise Application Support</span></li>
+                    <li class="flex items-center space-x-2.5"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Xway PH Architecture & Development</span></li>
+                    <li class="flex items-center space-x-2.5"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Process Automation & Workflows</span></li>
+                    <li class="flex items-center space-x-2.5"><i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400"></i><span>Native Android Development</span></li>
                 </ul>
             </div>
         </div>
     </section>
 
     <!-- Experience Timeline -->
-    <section id="experience" class="py-20 px-6 max-w-6xl mx-auto border-t border-slate-200 dark:border-slate-900">
-        <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-12">Professional Journey</h2>
-        <div class="space-y-10 border-l border-slate-300 dark:border-slate-800 pl-6 ml-2">
+    <section id="experience" class="py-12 px-6 max-w-6xl mx-auto border-t border-slate-200/60 dark:border-slate-900 reveal">
+        <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-8">Professional Journey</h2>
+        <div class="space-y-8 border-l border-slate-300 dark:border-slate-800 pl-5 ml-2">
             
             <!-- Manulife -->
-            <div class="relative">
-                <div class="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-cyan-600 dark:bg-cyan-400 border-4 border-slate-50 dark:border-slate-950"></div>
-                <span class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">2017 – Present</span>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">Senior Software Technical Analyst</h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mb-3">Manulife Business Processing Services (Quezon City)</p>
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+            <div class="relative group">
+                <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-cyan-600 dark:bg-cyan-400 border-4 border-slate-50 dark:border-slate-950 transition-transform group-hover:scale-125"></div>
+                <span class="text-[11px] font-semibold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">2017 – Present</span>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white mt-0.5">Senior Software Technical Analyst</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1.5">Manulife Business Processing Services (Quezon City)</p>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                     Lead operations teams ensuring 24/6 support coverage, driving automation initiatives that reduced repetitive tasks, and managing application workflows.
                 </p>
             </div>
 
             <!-- IBM -->
-            <div class="relative">
-                <div class="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-400 dark:bg-slate-700 border-4 border-slate-50 dark:border-slate-950"></div>
-                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">2014 – 2017</span>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">Application Developer</h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mb-3">IBM Philippines (Quezon City)</p>
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+            <div class="relative group">
+                <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-slate-400 dark:bg-slate-700 border-4 border-slate-50 dark:border-slate-950 transition-transform group-hover:scale-125"></div>
+                <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">2014 – 2017</span>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white mt-0.5">Application Developer</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1.5">IBM Philippines (Quezon City)</p>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                     Delivered custom reports, enhancements, and automation scripts for enterprise clients across various sectors.
                 </p>
             </div>
 
             <!-- Accenture -->
-            <div class="relative">
-                <div class="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-400 dark:bg-slate-700 border-4 border-slate-50 dark:border-slate-950"></div>
-                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">2011 – 2014</span>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">Software Engineer</h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mb-3">Accenture Inc. (Mandaluyong City)</p>
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+            <div class="relative group">
+                <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-slate-400 dark:bg-slate-700 border-4 border-slate-50 dark:border-slate-950 transition-transform group-hover:scale-125"></div>
+                <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">2011 – 2014</span>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white mt-0.5">Software Engineer</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1.5">Accenture Inc. (Mandaluyong City)</p>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                     Supported global enterprise implementations, resolved production issues, and developed backend automation scripts.
                 </p>
             </div>
@@ -125,70 +175,70 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-20 px-6 max-w-6xl mx-auto border-t border-slate-200 dark:border-slate-900">
-        <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">Featured Project</h2>
-        <p class="text-slate-600 dark:text-slate-400 text-sm mb-12">Independent product development.</p>
+    <section id="projects" class="py-12 px-6 max-w-6xl mx-auto border-t border-slate-200/60 dark:border-slate-900 reveal">
+        <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-1">Featured Project</h2>
+        <p class="text-slate-600 dark:text-slate-400 text-xs mb-6">Independent product development.</p>
         
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm dark:shadow-xl max-w-3xl transition-colors duration-300">
-            <div class="flex items-center justify-between mb-4">
-                <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-xs font-semibold rounded-full">Lead Architecture & Android Development</span>
-                <a href="https://xway-ph.com" target="_blank" class="text-sm text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center space-x-1">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm dark:shadow-md max-w-3xl transition-all duration-300 hover:shadow-cyan-500/10 hover:border-cyan-500/50">
+            <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-0.5 bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[11px] font-semibold rounded-full">Lead Architecture & Android Development</span>
+                <a href="https://xway-ph.com" target="_blank" class="text-xs text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center space-x-1">
                     <span>xway-ph.com</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                 </a>
             </div>
-            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-3">Xway PH</h3>
-            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Xway PH</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed mb-4">
                 Designed and built Xway PH from the ground up as Lead Developer and Architect. A native Android application and web platform providing Philippine expressway navigation, route planning, offline toll fee calculations, and travel updates.
             </p>
-            <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-md">Android (Kotlin)</span>
-                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-md">Cloudflare Edge</span>
-                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-md">Firebase</span>
-                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-md">Google Play Billing</span>
+            <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] rounded">Android (Kotlin)</span>
+                <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] rounded">Cloudflare Edge</span>
+                <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] rounded">Firebase</span>
+                <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] rounded">Google Play Billing</span>
             </div>
         </div>
     </section>
 
     <!-- Skills Grid -->
-    <section id="skills" class="py-20 px-6 max-w-6xl mx-auto border-t border-slate-200 dark:border-slate-900">
-        <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-12">Technical Skills & Certifications</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6 transition-colors duration-300">
-                <h3 class="text-cyan-600 dark:text-cyan-400 font-semibold mb-3">Automation & Operations</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400">ITIL V4 Certified, CA Workload Automation, Control-M, AutoSys, ServiceNow, Incident & Operation Management.</p>
+    <section id="skills" class="py-12 px-6 max-w-6xl mx-auto border-t border-slate-200/60 dark:border-slate-900 reveal">
+        <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-8">Technical Skills & Certifications</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/50">
+                <h3 class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold mb-2">Automation & Operations</h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">ITIL V4 Certified, CA Workload Automation, Control-M, AutoSys, ServiceNow, Incident & Operation Management.</p>
             </div>
-            <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6 transition-colors duration-300">
-                <h3 class="text-cyan-600 dark:text-cyan-400 font-semibold mb-3">Languages & Data</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400">SQL, PowerShell, PHP, HTML, MS SQL Server, Oracle, Azure Databricks, Power BI.</p>
+            <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/50">
+                <h3 class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold mb-2">Languages & Data</h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">SQL, PowerShell, PHP, HTML, MS SQL Server, Oracle, Azure Databricks, Power BI.</p>
             </div>
-            <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6 transition-colors duration-300">
-                <h3 class="text-cyan-600 dark:text-cyan-400 font-semibold mb-3">Education</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400">B.S. Computer Science (STI College Ortigas-Cainta).</p>
+            <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/50">
+                <h3 class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold mb-2">Education</h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">B.S. Computer Science (STI College Ortigas-Cainta).</p>
             </div>
         </div>
     </section>
 
     <!-- Contact Footer -->
-    <footer id="contact" class="py-16 px-6 border-t border-slate-200 dark:border-slate-900 bg-slate-100 dark:bg-slate-950 text-center transition-colors duration-300">
-        <div class="max-w-xl mx-auto">
-            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3">Get in Touch</h2>
-            <p class="text-slate-600 dark:text-slate-400 text-sm mb-6">Open to side projects and freelance mobile development work.</p>
-            <div class="flex justify-center space-x-6 text-xl text-slate-600 dark:text-slate-400">
-                <a href="https://www.linkedin.com/in/rodolfoapojr/" target="_blank" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="mailto:apojrro@gmail.com" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    <footer id="contact" class="py-12 px-6 border-t border-slate-200/60 dark:border-slate-900 bg-slate-100/60 dark:bg-slate-950 text-center transition-colors duration-300">
+        <div class="max-w-xl mx-auto reveal">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Get in Touch</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-xs mb-5">Open to side projects and freelance mobile development work.</p>
+            <div class="flex justify-center space-x-6 text-lg text-slate-600 dark:text-slate-400">
+                <a href="https://www.linkedin.com/in/rodolfoapojr/" target="_blank" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors transform hover:scale-110" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:apojrro@gmail.com" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors transform hover:scale-110" title="Email"><i class="fa-solid fa-envelope"></i></a>
             </div>
-            <p class="text-xs text-slate-400 dark:text-slate-600 mt-10">&copy; 2026 Rodolfo Apo Jr. All rights reserved.</p>
+            <p class="text-[11px] text-slate-400 dark:text-slate-600 mt-8">&copy; 2026 Rodolfo Apo Jr. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Theme Toggle Script -->
+    <!-- Interactive JavaScript -->
     <script>
+        // 1. Theme Toggle Functionality
         const themeToggleBtn = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const htmlElement = document.documentElement;
 
-        // Default to Light Mode (remove 'dark' class if not set)
         if (localStorage.getItem('theme') === 'dark') {
             htmlElement.classList.add('dark');
             themeIcon.classList.remove('fa-moon');
@@ -212,6 +262,39 @@
                 themeIcon.classList.add('fa-sun');
             }
         });
+
+        // 2. Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 3. Scroll Reveal Animation
+        const reveals = document.querySelectorAll('.reveal');
+
+        function revealOnScroll() {
+            for (let i = 0; i < reveals.length; i++) {
+                let windowHeight = window.innerHeight;
+                let elementTop = reveals[i].getBoundingClientRect().top;
+                let elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
     </script>
 </body>
 </html>
